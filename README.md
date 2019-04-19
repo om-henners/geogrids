@@ -1,33 +1,29 @@
-geogrids
-========
+# geogrids
 
-.. image:: https://img.shields.io/pypi/v/geogrids.svg
-    :target: https://pypi.python.org/pypi/geogrids
-    :alt: Latest PyPI version
+[![Latest PyPI
+version](https://img.shields.io/pypi/v/geogrids.svg)](https://pypi.python.org/pypi/geogrids)
 
-.. image:: https://travis-ci.org/borntyping/cookiecutter-pypackage-minimal.png
-   :target: https://travis-ci.org/borntyping/cookiecutter-pypackage-minimal
-   :alt: Latest Travis CI build status
+A Python implementation of the npm geogrids library by Iván Sánchez
+Ortega -utilities for working with Global Discrete Geodetic Grids
+(GDGGs)
 
-A Python implementation of the npm geogrids library by Iván Sánchez Ortega -
-utilities for working with Global Discrete Geodetic Grids (GDGGs)
+## Usage
 
-Usage
------
+## Installation
 
-Installation
-------------
+`pip install geogrids`
 
-Requirements
-^^^^^^^^^^^^
+### Requirements
 
-Compatibility
--------------
+`geogrids` doesn't have any third party requirements to run
 
-Licence
--------
+## Compatibility
 
-Authors
--------
+Python 3.5+
 
-`geogrids` was written by `Henry Walshaw <henry.walshaw@gmail.com>`_.
+## Licence
+
+## Authors
+
+`geogrids` was written by Henry Walshaw in
+Python, translated from the npm geogrids library by Iván Sánchez Ortega
