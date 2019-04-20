@@ -28,7 +28,7 @@ setup(
     author_email="henry.walshaw@gmail.com",
 
     description="A Python implementation of the npm geogrids library by Iván Sánchez Ortega - utilities for working with Global Discrete Geodetic Grids (GDGGs)",
-    long_description=read("README.rst"),
+    long_description=read("README.md"),
 
     packages=find_packages(exclude=('tests',)),
 
