@@ -1,4 +1,5 @@
 import os.path
+import string
 
 from hypothesis import given
 from hypothesis import strategies
@@ -94,6 +95,27 @@ def test_build_custom_encoder(dog_breeds):
 
     numeric_hash, precision = breeds.string_to_hash(
         'Greyhound\tBulldog\tGalgo Español')
+
+    assert precision > 0, 'Precision not above zero'
+
+
+@given(
+    separator=strategies.sampled_from(string.punctuation)
+)
+def test_build_custom_encoder_with_separator(dog_breeds, separator):
+    breeds = geogrids.encoders.Encoder(wordlist=dog_breeds, separator=separator)
+
+    encoded = separator.join(['Greyhound', 'Bulldog', 'Galgo Español'])
+
+    numeric_hash, precision = breeds.string_to_hash(encoded)
+
+    assert precision > 0, 'Precision not above zero'
+
+
+def test_build_custom_encoder_no_separator():
+    encoder = geogrids.encoders.Encoder(wordlist=list(string.punctuation), separator='')
+
+    numeric_hash, precision = encoder.string_to_hash('!#&')
 
     assert precision > 0, 'Precision not above zero'
 

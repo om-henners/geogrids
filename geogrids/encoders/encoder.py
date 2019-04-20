@@ -105,7 +105,12 @@ class Encoder:
         precision = 0
         multiplier = 1
 
-        for word in encoded.split(self.separator):
+        if self.separator:  # support for a zero length separator
+            words = encoded.split(self.separator)
+        else:
+            words = list(encoded)
+
+        for word in words:
             try:
                 position = self.wordlist.index(word)
             except ValueError:
