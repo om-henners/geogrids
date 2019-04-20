@@ -20,26 +20,26 @@ def get_requirements():
 
 setup(
     name="geogrids",
-    version="0.1.0",
-    url="https://github.com/borntyping/cookiecutter-pypackage-minimal",
-    license='MIT',
+    version="1.0.1",
+    url="https://github.com/om-henners/geogrids",
+    license='WTFPL',
 
     author="Henry Walshaw",
     author_email="henry.walshaw@gmail.com",
 
-    description="A Python implementation of the npm geogrids library by Iván Sánchez Ortega - utilities for working with Global Discrete Geodetic Grids (GDGGs)",
-    long_description=read("README.md"),
+    description="A Python implementation of the npm geogrids library - utilities for working with Global Discrete Geodetic Grids (GDGGs)",
+    long_description=read("README.rst"),
 
     packages=find_packages(exclude=('tests',)),
 
     install_requires=get_requirements(),
 
     classifiers=[
-        'Development Status :: 2 - Pre-Alpha',
-        'License :: OSI Approved :: MIT License',
-        'Programming Language :: Python',
+        'Development Status :: 5 - Production/Stable',
+        'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
+        'Topic :: Scientific/Engineering :: GIS'
     ],
 )
