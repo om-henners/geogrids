@@ -2,7 +2,7 @@ from hypothesis import given
 from hypothesis import strategies
 import pytest
 
-
+from geogrids.gdgg.oqtm import HASH_PRECISIONS
 import geogrids
 
 
@@ -131,7 +131,7 @@ def test_numeric_hash_to_location(numeric_hash):
 
 @given(
     numeric_hash=strategies.integers(min_value=0, max_value=1e6),
-    precision=strategies.integers(min_value=4, max_value=100)
+    precision=strategies.sampled_from(HASH_PRECISIONS)
 )
 def test_numeric_hash_to_location_with_precision(numeric_hash, precision):
 
@@ -148,7 +148,7 @@ def test_numeric_hash_to_location_with_precision(numeric_hash, precision):
                                allow_infinity=False),
     longitude=strategies.floats(min_value=-180, max_value=180, allow_nan=False,
                                 allow_infinity=False),
-    precision=strategies.integers(min_value=4, max_value=100)
+    precision=strategies.sampled_from(HASH_PRECISIONS)
 )
 def test_lat_lng_to_precise_location(latitude, longitude, precision):
 
@@ -229,7 +229,7 @@ def test_latitude_longitude_to_readable_hash(latitude, longitude):
                                allow_infinity=False),
     longitude=strategies.floats(min_value=-180, max_value=180, allow_nan=False,
                                 allow_infinity=False),
-    precision=strategies.integers(min_value=4, max_value=100)
+    precision=strategies.sampled_from(HASH_PRECISIONS)
 )
 def test_latitude_longitude_to_readable_hash_with_precision(latitude, longitude, precision):
     readable_hash = geogrids.gdgg.latitude_longitude_to_readable_hash(
@@ -258,7 +258,7 @@ def test_latitude_longitude_to_numeric_hash(latitude, longitude):
                                allow_infinity=False),
     longitude=strategies.floats(min_value=-180, max_value=180, allow_nan=False,
                                 allow_infinity=False),
-    precision=strategies.integers(min_value=4, max_value=100)
+    precision=strategies.sampled_from(HASH_PRECISIONS)
 )
 def test_latitude_longitude_to_numeric_hash_with_precision(latitude, longitude, precision):
     numeric_hash = geogrids.gdgg.latitude_longitude_to_numeric_hash(
@@ -280,7 +280,7 @@ def test_numeric_hash_to_latitude_longitude(numeric_hash):
 
 @given(
     numeric_hash=strategies.integers(min_value=0, max_value=1e6),
-    precision=strategies.integers(min_value=4, max_value=100)
+    precision=strategies.sampled_from(HASH_PRECISIONS)
 )
 def test_numeric_hash_to_latitude_longitude_with_precision(numeric_hash, precision):
     latitude, longitude = geogrids.gdgg.numeric_hash_to_latitude_longitude(
@@ -323,7 +323,7 @@ def test_numeric_hash_to_area(numeric_hash):
 
 @given(
     numeric_hash=strategies.integers(min_value=0, max_value=1e6),
-    precision=strategies.integers(min_value=4, max_value=100)
+    precision=strategies.sampled_from(HASH_PRECISIONS)
 )
 def test_numeric_hash_to_area_with_precision(numeric_hash, precision):
 
