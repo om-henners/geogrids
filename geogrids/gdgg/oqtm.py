@@ -3,6 +3,7 @@ Simplistic Octohedral Quaternary Triangle Mesh
 
 Translated from the GeoGrids library on NPM written by Iván Sánchez Ortega
 """
+import math
 
 
 HASH_PRECISIONS = list(range(3, 60, 2))
@@ -52,7 +53,6 @@ class Location():
             (0, 1)
         """
         if (latitude is None or longitude is None) and any((octant is None, x is None, y is None)):
-#         if not ((latitude and longitude) or (octant and x and y)):
             raise ValueError('Either latitude and longitude or octant, x and y  are required')
 
         self.levels = []
@@ -204,7 +204,7 @@ class Location():
 
         Returns
         -------
-        str
+        readable_hash : str
             human-readable hash
         """
         return str(self.octant) + ''.join([str(i) for i in self.levels])
@@ -215,7 +215,7 @@ class Location():
 
         Returns
         -------
-        int
+        numeric_hash : int
             Numeric hash
         """
         acc = self.octant
@@ -358,35 +358,38 @@ class Location():
             A collection of locations - typically 3, but in the edge case of
             normalising the poles, this will have length 4.
         """
-        location1 = cls(octant=octant, x=0, y=0)
+        ALMOST_ZERO = 1e-12
+        ALMOST_ONE = 1 - 1e-12
+
+        location1 = cls(octant=octant, x=ALMOST_ZERO, y=ALMOST_ZERO)
         location1.levels = levels
         # don't need to explicitly call compute latitude and longitude as it's
         # lazily processed as required
 
-        location2 = cls(octant=octant, x=0, y=1)
+        location2 = cls(octant=octant, x=ALMOST_ZERO, y=ALMOST_ONE)
         location2.levels = levels
 
-        location3 = cls(octant=octant, x=1, y=0)
+        location3 = cls(octant=octant, x=ALMOST_ONE, y=ALMOST_ZERO)
         location3.levels = levels
 
         if normalise_poles:
 
-            if abs(location2.latitude) == 90:
+            if math.isclose(abs(location2.latitude), 90):
                 location2a = cls(
                     octant=octant,
-                    x=0,
-                    y=1,
+                    x=ALMOST_ZERO,
+                    y=ALMOST_ONE,
                     latitude=location2.latitude,
-                    longitude=location2.longitude
+                    longitude=location1.longitude
                 )
                 location2a.levels = levels
 
                 location2b = cls(
                     octant=octant,
-                    x=0,
-                    y=1,
+                    x=ALMOST_ZERO,
+                    y=ALMOST_ONE,
                     latitude=location2.latitude,
-                    longitude=location2.longitude
+                    longitude=location3.longitude
                 )
                 location2b.levels = levels
 
