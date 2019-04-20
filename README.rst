@@ -1,163 +1,183 @@
-# geogrids
+geogrids
+========
 
-[![Latest PyPI
-version](https://img.shields.io/pypi/v/geogrids.svg)](https://pypi.python.org/pypi/geogrids)
+|Latest PyPI version|
 
-A Python implementation of the npm [geogrids](https://gitlab.com/IvanSanchez/geogrids)
-library by [Iván Sánchez Ortega](https://twitter.com/RealIvanSanchez) -
-utilities for working with Global Discrete Geodetic Grids (GDGGs).
+A Python implementation of the npm
+`geogrids <https://gitlab.com/IvanSanchez/geogrids>`__ library by `Iván
+Sánchez Ortega <https://twitter.com/RealIvanSanchez>`__ - utilities for
+working with Global Discrete Geodetic Grids (GDGGs).
 
-This module contains both a Location object that can be used to generate a hash
-or take a has and generate a location, along with an encoders module that can
-transform the code into a (hopefully) useful text string.
+This module contains both a Location object that can be used to generate
+a hash or take a has and generate a location, along with an encoders
+module that can transform the code into a (hopefully) useful text
+string.
 
-This is written with the default encoders from the original library, and can be
-easily extended to use a text set of your choice.
+This is written with the default encoders from the original library, and
+can be easily extended to use a text set of your choice.
 
-## Usage
+Usage
+-----
 
 There are two components of the library:
 
-### Representing a location
+Representing a location
+~~~~~~~~~~~~~~~~~~~~~~~
 
-Given some location with a latitude and longitude, for example: -35.6498, 150.2935
-you can easily create a hash as either a simple string or a numeric value:
+Given some location with a latitude and longitude, for example:
+-35.6498, 150.2935 you can easily create a hash as either a simple
+string or a numeric value:
 
-```
->>> latitude = -35.6498
->>> longitude = 150.2935
->>> import geogrids
->>> geogrids.gdgg.latitude_longitude_to_readable_hash(latitude=latitude, longitude=longitude)
-'702020210311'
->>> geogrids.gdgg.latitude_longitude_to_numeric_hash(latitude=latitude, longitude=longitude)
-12108871
-```
+::
+
+   >>> latitude = -35.6498
+   >>> longitude = 150.2935
+   >>> import geogrids
+   >>> geogrids.gdgg.latitude_longitude_to_readable_hash(latitude=latitude, longitude=longitude)
+   '702020210311'
+   >>> geogrids.gdgg.latitude_longitude_to_numeric_hash(latitude=latitude, longitude=longitude)
+   12108871
 
 Of course you can go the other direction as well:
 
-```
->>> geogrids.gdgg.numeric_hash_to_latitude_longitude(12108871)
-(-35.65283203125, 150.2789682218808)
->>> geogrids.gdgg.readable_hash_to_latitude_longitude('702020210311')
-(-35.65283203125, 150.2789682218808)
-```
+::
 
-Notice that the hashes are location approximations depending on a level of
-precision - the higher the precision the better the accuracy:
+   >>> geogrids.gdgg.numeric_hash_to_latitude_longitude(12108871)
+   (-35.65283203125, 150.2789682218808)
+   >>> geogrids.gdgg.readable_hash_to_latitude_longitude('702020210311')
+   (-35.65283203125, 150.2789682218808)
 
-```
->>> numeric_hash = geogrids.gdgg.latitude_longitude_to_numeric_hash(latitude=latitude, longitude=longitude, precision=55)
->>> geogrids.gdgg.numeric_hash_to_latitude_longitude(numeric_hash, precision=55)
-(-35.64979965984821, 150.2934998246466)
-```
+Notice that the hashes are location approximations depending on a level
+of precision - the higher the precision the better the accuracy:
 
-Effectively these hashes define a location within a triangular region, which you
-can retrieve from either the `numeric_hash_to_area` or the `readable_hash_to_area`
-functions, which return a collection of `Location` objects (usually the three
-vertices of a triangular region, but close to the poles for simplification the
-default is to return a box):
+::
 
-```
->>> vertices = geogrids.gdgg.numeric_hash_to_area(numeric_hash)
->>> vertices
-[<Location [702020210311]>, <Location [702020210311]>, <Location [702020210311]>]
->>> vertices[0].latitude, vertices[0].longitude
-(-35.63964843750004, 150.24252223120465)
-```
+   >>> numeric_hash = geogrids.gdgg.latitude_longitude_to_numeric_hash(latitude=latitude, longitude=longitude, precision=55)
+   >>> geogrids.gdgg.numeric_hash_to_latitude_longitude(numeric_hash, precision=55)
+   (-35.64979965984821, 150.2934998246466)
 
-In general it's advisable to just stick to the hashes and the latitudes and
-longitudes, but the `Location` object does implement a [`__geo_feature__`](https://gist.github.com/sgillies/2217756)
-interface which means you can use it with other libraries that work with this
-interface for more complicated geometric operations, for example via the
-[Shapely](https://shapely.readthedocs.io/) library:
+Effectively these hashes define a location within a triangular region,
+which you can retrieve from either the ``numeric_hash_to_area`` or the
+``readable_hash_to_area`` functions, which return a collection of
+``Location`` objects (usually the three vertices of a triangular region,
+but close to the poles for simplification the default is to return a
+box):
 
-```
->>> from shapely import geometry
->>> points = [geometry.shape(vertex) for vertex in vertices]
->>> line = geometry.LineString(points)
->>> line.length
-0.11570586750499379
->>> polygon = geometry.Polygon(line)
->>> polygon.area
-0.0015986572857657128
->>> polygon
-```
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100.0" height="100.0" viewBox="150.2396119644302 -35.68650401677441 0.07857720291011105 0.049765846048813955" preserveAspectRatio="xMinYMin meet"><g transform="matrix(1,0,0,-1,0,-71.3232421875)"><path fill-rule="evenodd" fill="#66cc99" stroke="#555555" stroke-width="0.001571544058202221" opacity="0.6" d="M 150.24252223120465,-35.63964843750004 L 150.29126213592235,-35.68359374999996 L 150.31527890056586,-35.63964843750004 L 150.24252223120465,-35.63964843750004 z" /></g></svg>
+::
 
-### Encoding and decoding a hash
+   >>> vertices = geogrids.gdgg.numeric_hash_to_area(numeric_hash)
+   >>> vertices
+   [<Location [702020210311]>, <Location [702020210311]>, <Location [702020210311]>]
+   >>> vertices[0].latitude, vertices[0].longitude
+   (-35.63964843750004, 150.24252223120465)
 
-The encoders allow you to transform a hash to an easily memorisable string and
-back again. Out of the box this comes with a number of encoders:
+In general it's advisable to just stick to the hashes and the latitudes
+and longitudes, but the ``Location`` object does implement a
+```__geo_feature__`` <https://gist.github.com/sgillies/2217756>`__
+interface which means you can use it with other libraries that work with
+this interface for more complicated geometric operations, for example
+via the `Shapely <https://shapely.readthedocs.io/>`__ library:
 
-- `geogrids.encoders.fucks` as featured in http://www.what3fucks.com
-- `geogrids.encoders.goshdarnits` as featured in http://www.what3goshdarnits.com/
-- `geogrids.encoders.pokes` as featured in http://www.what3pokemon.com/
-- `geogrids.encoders.cheeses` which doesn't yet feature anywhere (AFAIK)
+::
+
+   >>> from shapely import geometry
+   >>> points = [geometry.shape(vertex) for vertex in vertices]
+   >>> line = geometry.LineString(points)
+   >>> line.length
+   0.11570586750499379
+   >>> polygon = geometry.Polygon(line)
+   >>> polygon.area
+   0.0015986572857657128
+
+Encoding and decoding a hash
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The encoders allow you to transform a hash to an easily memorisable
+string and back again. Out of the box this comes with a number of
+encoders:
+
+-  ``geogrids.encoders.fucks`` as featured in
+   `http://www.what3fucks.com <http://www.what3fucks.com>`__
+-  ``geogrids.encoders.goshdarnits`` as featured in
+   `http://www.what3goshdarnits.com/ <http://www.what3goshdarnits.com/>`__
+-  ``geogrids.encoders.pokes`` as featured in
+   `http://www.what3pokemon.com/ <http://www.what3pokemon.com/>`__
+-  ``geogrids.encoders.cheeses`` which doesn't yet feature anywhere
+   (AFAIK)
 
 Given a numeric hash of a location (see above) these are easy to use:
 
-```
->>> geogrids.encoders.cheeses.hash_to_string(numeric_hash, precision=25)
-'Dubliner Requeijão Provolone Telemea'
->>> geogrids.encoders.cheeses.hash_to_string(numeric_hash, precision=55)
-'Dubliner Requeijão Provolone Telemea Danablu Coulommiers Chevrotin'
-```
+::
+
+   >>> geogrids.encoders.cheeses.hash_to_string(numeric_hash, precision=25)
+   'Dubliner Requeijão Provolone Telemea'
+   >>> geogrids.encoders.cheeses.hash_to_string(numeric_hash, precision=55)
+   'Dubliner Requeijão Provolone Telemea Danablu Coulommiers Chevrotin'
 
 Or given the readable encoding it's simple to go back the other way:
 
-```
->>> numeric_hash, precision = geogrids.encoders.cheeses.string_to_hash('Dubliner Requeijão Provolone Telemea')
->>> numeric_hash, precision
-(3870868551, 32)
->>> geogrids.gdgg.numeric_hash_to_latitude_longitude(numeric_hash, precision)
-(-35.647064208984375, 150.2948563112389)
-```
+::
 
-If you don't want to use one of the builtin encoders, you can generate your own
-easily:
+   >>> numeric_hash, precision = geogrids.encoders.cheeses.string_to_hash('Dubliner Requeijão Provolone Telemea')
+   >>> numeric_hash, precision
+   (3870868551, 32)
+   >>> geogrids.gdgg.numeric_hash_to_latitude_longitude(numeric_hash, precision)
+   (-35.647064208984375, 150.2948563112389)
 
-```
->>> wordlist = list('😀😎🤬😱😈👍🖖⚽🐶🐍🐡🦜🍀🌞🌚🔥')
-```
+If you don't want to use one of the builtin encoders, you can generate
+your own easily:
 
-*Note* the wordlist should be length that is a power of two - the level used for
-calculating precisions is rounded down to the closest power of two - any words
-after that number will be skipped.
+::
 
-```
->>> emoji_encoder = geogrids.encoders.Encoder(wordlist, separator='')
->>> emoji_encoder.hash_to_string(numeric_hash, precision)
-'⚽😈😈🍀🐶🦜🖖🌚'
-```
+   >>> wordlist = list('😀😎🤬😱😈👍🖖⚽🐶🐍🐡🦜🍀🌞🌚🔥')
 
-**Warning** One key consideration with the encoders: if you create an encoding
-and share it with someone else the wordlist must be in exactly the same order!
-Otherwise when decoding you'll get completely different results!
+*Note* the wordlist should be length that is a power of two - the level
+used for calculating precisions is rounded down to the closest power of
+two - any words after that number will be skipped.
 
-```
->>> numeric_hash, precision = emoji_encoder.string_to_hash('⚽😈😈🍀🐶🦜🖖🌚')
->>> geogrids.gdgg.numeric_hash_to_latitude_longitude(numeric_hash, precision)
-(-35.647064208984375, 150.2948563112389)
-``` 
+::
 
-## Installation
+   >>> emoji_encoder = geogrids.encoders.Encoder(wordlist, separator='')
+   >>> emoji_encoder.hash_to_string(numeric_hash, precision)
+   '⚽😈😈🍀🐶🦜🖖🌚'
 
-`pip install geogrids`
+**Warning** One key consideration with the encoders: if you create an
+encoding and share it with someone else the wordlist must be in exactly
+the same order! Otherwise when decoding you'll get completely different
+results!
 
-### Requirements
+::
 
-`geogrids` doesn't have any third party library requirements
+   >>> numeric_hash, precision = emoji_encoder.string_to_hash('⚽😈😈🍀🐶🦜🖖🌚')
+   >>> geogrids.gdgg.numeric_hash_to_latitude_longitude(numeric_hash, precision)
+   (-35.647064208984375, 150.2948563112389)
 
-## Compatibility
+Installation
+------------
+
+``pip install geogrids``
+
+Requirements
+~~~~~~~~~~~~
+
+``geogrids`` doesn't have any third party library requirements
+
+Compatibility
+-------------
 
 Python 3.5+
 
-## Licence
+Licence
+-------
 
-This is licensed under the Do What The Fuck You Want Public License as is the
-original JS implementation. So enjoy!
+This is licensed under the Do What The Fuck You Want Public License as
+is the original JS implementation. So enjoy!
 
-## Authors
+Authors
+-------
 
-`geogrids` was written by Henry Walshaw in
-Python, translated from the npm geogrids library by Iván Sánchez Ortega
+``geogrids`` was written by Henry Walshaw in Python, translated from the
+npm geogrids library by Iván Sánchez Ortega
+
+.. |Latest PyPI version| image:: https://img.shields.io/pypi/v/geogrids.svg
+   :target: https://pypi.python.org/pypi/geogrids
