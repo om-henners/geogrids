@@ -32,7 +32,7 @@ setup(
 
     packages=find_packages(exclude=('tests',)),
 
-    install_requires=get_requirements(),  # TODO: Check this works
+    install_requires=get_requirements(),
 
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
