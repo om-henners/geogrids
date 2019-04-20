@@ -73,7 +73,7 @@ box):
 
 In general it's advisable to just stick to the hashes and the latitudes
 and longitudes, but the ``Location`` object does implement a
-```__geo_feature__`` <https://gist.github.com/sgillies/2217756>`__
+`__geo_feature__ <https://gist.github.com/sgillies/2217756>`__
 interface which means you can use it with other libraries that work with
 this interface for more complicated geometric operations, for example
 via the `Shapely <https://shapely.readthedocs.io/>`__ library:
