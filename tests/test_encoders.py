@@ -1,6 +1,8 @@
+import os.path
+
 from hypothesis import given
 from hypothesis import strategies
-
+import pytest
 
 from geogrids.encoders import wordlists
 import geogrids
@@ -66,3 +68,22 @@ def test_pokes_encoder(encoded):
     assert precision > 0, 'Precision not above zero'
 
 
+@pytest.fixture(scope='session')
+def dog_breeds():
+    path = os.path.join(
+        os.path.dirname(__file__),
+        'breeds.csv'
+    )
+    breeds = open(path).read().split('\n')
+
+    return breeds
+
+
+def test_build_custom_encoder(dog_breeds):
+
+    breeds = geogrids.encoders.Encoder(wordlist=dog_breeds, separator='\t')
+
+    numeric_hash, precision = breeds.string_to_hash(
+        'Greyhound\tBulldog\tGalgo Español')
+
+    assert precision > 0, 'Precision not above zero'
