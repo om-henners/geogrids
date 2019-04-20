@@ -108,7 +108,7 @@ class Encoder:
         for word in encoded.split(self.separator):
             try:
                 position = self.wordlist.index(word)
-            except IndexError:
+            except ValueError:
                 if precision > 0:
                     warnings.warn(
                         f'Could not find {word} in wordlist',
