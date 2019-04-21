@@ -181,5 +181,7 @@ Authors
 ``geogrids`` was written by Henry Walshaw in Python, translated from the
 npm geogrids library by Iván Sánchez Ortega
 
+``ducks`` encoder contributed by Adam Steer
+
 .. |Latest PyPI version| image:: https://img.shields.io/pypi/v/geogrids.svg
    :target: https://pypi.python.org/pypi/geogrids
