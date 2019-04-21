@@ -104,6 +104,8 @@ encoders:
    `http://www.what3pokemon.com/ <http://www.what3pokemon.com/>`__
 -  ``geogrids.encoders.cheeses`` which doesn't yet feature anywhere
    (AFAIK)
+-  ``geogrids.encoders.ducks`` as featured in
+    `http://www.what3ducks.com <http://www.what3ducks.com>`__
 
 Given a numeric hash of a location (see above) these are easy to use:
 
@@ -178,6 +180,8 @@ Authors
 
 ``geogrids`` was written by Henry Walshaw in Python, translated from the
 npm geogrids library by Iván Sánchez Ortega
+
+``ducks`` encoder contributed by Adam Steer
 
 .. |Latest PyPI version| image:: https://img.shields.io/pypi/v/geogrids.svg
    :target: https://pypi.python.org/pypi/geogrids

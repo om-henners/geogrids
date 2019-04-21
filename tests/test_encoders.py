@@ -70,6 +70,21 @@ def test_pokes_encoder(encoded):
     assert precision > 0, 'Precision not above zero'
 
 
+@given(encoded=strategies.lists(
+    strategies.sampled_from(wordlists.ducks[:32]),
+    min_size=1,
+    max_size=5
+))
+def test_pokes_encoder(encoded):
+    text = ' '.join(encoded)
+
+    encoded_hash, precision = geogrids.encoders.ducks.string_to_hash(
+        text
+    )
+
+    assert precision > 0, 'Precision not above zero'
+
+
 @pytest.fixture(scope='session')
 def dog_breeds():
     path = os.path.join(

@@ -12,6 +12,7 @@ fucks = Encoder(wordlist=wordlists.fucks)
 cheeses = Encoder(wordlist=wordlists.cheeses)
 goshdarnits = Encoder(wordlist=wordlists.goshdarnits)
 pokes = Encoder(wordlist=wordlists.pokes)
+ducks = Encoder(wordlist=wordlists.ducks)
 
 
-__all__ = [Encoder, fucks, cheeses, goshdarnits, pokes]
+__all__ = [Encoder, fucks, cheeses, goshdarnits, pokes, ducks]
