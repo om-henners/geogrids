@@ -104,6 +104,8 @@ encoders:
    `http://www.what3pokemon.com/ <http://www.what3pokemon.com/>`__
 -  ``geogrids.encoders.cheeses`` which doesn't yet feature anywhere
    (AFAIK)
+-  ``geogrids.encoders.ducks`` as featured in
+    `http://www.what3ducks.com <http://www.what3ducks.com>`__
 
 Given a numeric hash of a location (see above) these are easy to use:
 
